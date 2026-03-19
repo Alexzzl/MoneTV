@@ -1,0 +1,350 @@
+/* ===== Discover Page Styles (Figma) ===== */
+
+#discover-page {
+    padding: 20px;
+}
+
+/* Discover Header */
+.discover-header-section {
+    text-align: center;
+    padding: 40px 0;
+}
+
+.discover-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid rgba(123, 63, 228, 0.4);
+    border-radius: 20px;
+    background: rgba(123, 63, 228, 0.2);
+    padding: 7px 15px;
+    color: var(--text-primary);
+    font-size: var(--font-size-sm);
+}
+
+.discover-tag .icon {
+    font-family: var(--font-awesome-family);
+    color: var(--primary-color);
+}
+
+.discover-main-title {
+    font-size: var(--font-size-xxxl);
+    font-weight: 700;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-top: 24px;
+}
+
+.discover-subtitle {
+    font-size: var(--font-size-lg);
+    color: var(--text-muted);
+    margin-top: 21px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.5;
+}
+
+/* Genre Filters */
+.genre-filters {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 27px;
+    margin-bottom: 40px;
+}
+
+.genre-filters .btn {
+    border-radius: 20px;
+    font-size: var(--font-size-sm);
+    padding: 11px 20px;
+    border: 1px solid var(--border-color);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+}
+
+.genre-filters .btn.active {
+    background: var(--secondary-gradient);
+    border-color: var(--primary-color);
+    color: var(--text-primary);
+}
+
+/* Trending Section */
+.trending-section {
+    margin-bottom: 40px;
+}
+
+.discover-section-title {
+    font-size: var(--font-size-xxl);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.discover-section-title .icon {
+    font-family: var(--font-awesome-family);
+    color: var(--primary-color);
+}
+
+.trending-cards-container {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding-bottom: 20px; /* for scrollbar */
+}
+
+.trending-card {
+    width: 474px;
+    flex-shrink: 0;
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--border-color);
+    background: var(--bg-card);
+    overflow: hidden;
+    position: relative;
+    backdrop-filter: blur(5px);
+    background-color: rgba(30, 30, 40, 0.7);
+}
+
+.trending-card-poster {
+    width: 100%;
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.trending-card-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    padding: 6px 12px;
+    border-radius: 12px;
+    background: var(--secondary-gradient);
+    color: var(--text-primary);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+}
+
+.trending-card-content {
+    padding: 20px;
+}
+
+.trending-card-title {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.trending-card-description {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+    margin-top: 10px;
+    line-height: 1.4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.trending-card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.trending-card-tags {
+    font-size: var(--font-size-xs);
+    color: var(--primary-color);
+}
+
+.trending-card-rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: var(--font-size-sm);
+    color: var(--rating-color);
+}
+
+.trending-card-rating .icon {
+    font-family: var(--font-awesome-family);
+}
+
+/* Browse by Genre Section */
+.browse-genre-section {
+    margin-bottom: 40px;
+}
+
+.genre-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+.genre-card {
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    background: var(--bg-card);
+    padding: 25px;
+    backdrop-filter: blur(5px);
+    background-color: rgba(30, 30, 40, 0.7);
+}
+
+.genre-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.genre-card-icon-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.genre-card-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    background: rgba(123, 63, 228, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-awesome-family);
+    font-size: 22px;
+    color: var(--primary-color);
+}
+
+.genre-card-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.genre-card-count {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+}
+
+.genre-card-description {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+    margin-top: 15px;
+    line-height: 1.5;
+}
+
+.genre-card-tags {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.genre-card-tag {
+    padding: 7px 12px;
+    border-radius: 15px;
+    background: rgba(123, 63, 228, 0.1);
+    border: 1px solid rgba(123, 63, 228, 0.2);
+    color: var(--primary-color);
+    font-size: var(--font-size-xs);
+}
+
+/* New This Week Section */
+#new-this-week-section {
+    margin-bottom: 40px;
+}
+
+.new-this-week-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.new-drama-card-v2 {
+    background: var(--bg-card);
+    border-radius: var(--border-radius-lg);
+    padding: 25px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 220px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.new-drama-card-v2:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.new-drama-card-v2-icon {
+    font-family: var(--font-awesome-family);
+    font-size: 60px;
+    color: var(--text-primary);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.1;
+}
+
+.new-drama-card-v2-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: var(--primary-color);
+    color: var(--text-primary);
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+}
+
+.new-drama-card-v2-content {
+    position: relative;
+    z-index: 2;
+}
+
+.new-drama-card-v2-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.new-drama-card-v2-description {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+    margin-top: 10px;
+    line-height: 1.4;
+}
+
+.new-drama-card-v2-play-icon {
+    font-family: var(--font-awesome-family);
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--primary-gradient);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    z-index: 2;
+    cursor: pointer;
+}
