@@ -266,6 +266,45 @@ async function main() {
       `
         (() => {
           window.scrollTo(0, 0);
+          if (!window.Router || typeof window.Router.showExitDialog !== 'function') {
+            throw new Error('Router.showExitDialog is not available.');
+          }
+          window.Router.showExitDialog();
+          return true;
+        })()
+      `
+    );
+    await waitForCondition(
+      cdp,
+      `
+        document.getElementById('exit-confirm-dialog')
+        && !document.getElementById('exit-confirm-dialog').hidden
+      `
+    );
+    await delay(300);
+
+    const popupSize = await captureCurrentView(cdp, path.join(OUTPUT_DIR, '07-home-return-popup.jpg'));
+    console.log(`07-home-return-popup.jpg ${(popupSize / 1024).toFixed(1)}KB`);
+
+    await evaluate(
+      cdp,
+      `
+        (() => {
+          if (!window.Router || typeof window.Router.hideExitDialog !== 'function') {
+            throw new Error('Router.hideExitDialog is not available.');
+          }
+          window.Router.hideExitDialog({ restoreFocus: false });
+          return true;
+        })()
+      `
+    );
+    await delay(150);
+
+    await evaluate(
+      cdp,
+      `
+        (() => {
+          window.scrollTo(0, 0);
           const card = document.querySelector('#popular-series .series-card')
             || document.querySelector('#home-page .series-card');
           if (!card) {

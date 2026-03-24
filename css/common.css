@@ -48,6 +48,10 @@
     box-sizing: border-box;
 }
 
+[hidden] {
+    display: none !important;
+}
+
 html {
     width: 100vw;
     height: 100vh;
@@ -345,6 +349,71 @@ body {
         transform: scale(0.95);
         opacity: 0.7;
     }
+}
+
+.exit-confirm-dialog {
+    position: fixed;
+    inset: 0;
+    z-index: 4500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px;
+}
+
+.exit-confirm-backdrop {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at top, rgba(123, 63, 228, 0.26), transparent 42%),
+        rgba(6, 8, 14, 0.82);
+    backdrop-filter: blur(14px);
+}
+
+.exit-confirm-panel {
+    position: relative;
+    width: min(640px, 100%);
+    padding: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 28px;
+    background: linear-gradient(180deg, rgba(30, 30, 40, 0.98) 0%, rgba(17, 17, 25, 0.98) 100%);
+    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.45);
+}
+
+.exit-confirm-tag {
+    margin-bottom: 14px;
+    color: #f7b267;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.exit-confirm-title {
+    margin-bottom: 14px;
+    font-size: 46px;
+    line-height: 1.1;
+}
+
+.exit-confirm-description {
+    max-width: 520px;
+    color: var(--text-secondary);
+    font-size: 22px;
+    line-height: 1.55;
+}
+
+.exit-confirm-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 18px;
+    margin-top: 32px;
+}
+
+.exit-confirm-actions .btn {
+    min-width: 180px;
+    min-height: 68px;
+    font-size: 20px;
+    font-weight: 700;
 }
 
 /* ===== 响应式适配 ===== */

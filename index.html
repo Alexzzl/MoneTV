@@ -97,6 +97,25 @@
                 <p>Daily Updated Mini-Series | Free Short Drama Series | Quick, Addictive, and Easy to Watch</p>
             </div>
         </footer>
+
+        <div id="exit-confirm-dialog" class="exit-confirm-dialog" hidden aria-hidden="true">
+            <div class="exit-confirm-backdrop"></div>
+            <div class="exit-confirm-panel" role="dialog" aria-modal="true" aria-labelledby="exit-confirm-title">
+                <p class="exit-confirm-tag">Exit Application</p>
+                <h2 id="exit-confirm-title" class="exit-confirm-title">Exit MoneTV?</h2>
+                <p class="exit-confirm-description">
+                    Press Exit App to close MoneTV, or choose Cancel to continue browsing.
+                </p>
+                <div class="exit-confirm-actions">
+                    <button type="button" id="exit-confirm-cancel" class="btn btn-secondary" data-focusable="true">
+                        Cancel
+                    </button>
+                    <button type="button" id="exit-confirm-exit" class="btn btn-primary" data-focusable="true">
+                        Exit App
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="js/data/mock.js"></script>

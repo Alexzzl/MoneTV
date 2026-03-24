@@ -130,8 +130,10 @@ def main() -> None:
     if not TEMPLATE.exists():
         raise FileNotFoundError(f"Template not found: {TEMPLATE}")
 
-    usage_collage = UI_DIR / "07-usage-scenario-collage.jpg"
-    menu_collage = UI_DIR / "08-menu-function-collage.jpg"
+    popup_home = UI_DIR / "07-home-return-popup.jpg"
+    usage_collage = UI_DIR / "08-usage-scenario-collage.jpg"
+    menu_collage = UI_DIR / "09-menu-function-collage.jpg"
+    return_collage = UI_DIR / "10-return-key-policy-collage.jpg"
 
     create_collage(
         [
@@ -155,6 +157,17 @@ def main() -> None:
         f"{APP_NAME} - Main Screens and Functions",
     )
 
+    create_collage(
+        [
+            (SCREENSHOT_DIR / "01-home-hero.jpg", "1. Home screen before pressing Return"),
+            (popup_home, "2. Press Return on Home: exit confirmation popup opens"),
+            (SCREENSHOT_DIR / "03-discover-top.jpg", "3. Press Return on Discover / Detail / Player: previous page"),
+            (SCREENSHOT_DIR / "01-home-hero.jpg", "4. Press Return again while popup is open: popup closes"),
+        ],
+        return_collage,
+        f"{APP_NAME} - Return Key Policy",
+    )
+
     prs = Presentation(str(TEMPLATE))
     remove_slide(prs, 0)
 
@@ -173,8 +186,10 @@ def main() -> None:
     set_cell_text(table.cell(1, 1), "March 19, 2026")
     set_cell_text(table.cell(1, 2), f"Initial Samsung TV Seller Office UI description for {APP_NAME}.")
     set_cell_text(table.cell(1, 3), "db")
-    for col in range(4):
-        set_cell_text(table.cell(2, col), "")
+    set_cell_text(table.cell(2, 0), "1.0.1")
+    set_cell_text(table.cell(2, 1), "March 24, 2026")
+    set_cell_text(table.cell(2, 2), "Updated return key policy scenarios and screenshots for Samsung review.")
+    set_cell_text(table.cell(2, 3), "db")
 
     contents = prs.slides[2]
     contents.shapes[0].text = "Contents"
@@ -260,7 +275,7 @@ def main() -> None:
             "4. Select Play Episode 1 or choose an available episode card.",
             "5. The Player screen opens and video playback starts.",
             "6. Select another episode from the episode list if needed.",
-            "7. Press Back / Return to go to the previous screen.",
+            "7. Press Return on Discover / Detail / Player to go to the previous screen.",
             "",
             "No account sign-in, activation, or purchase is required in the current release.",
         ],
@@ -272,13 +287,15 @@ def main() -> None:
     clear_and_set_text(
         usage_sample.shapes[1],
         [
-            "Use Case Title: Browse and play a drama episode",
-            "Path: Home or Discover -> Detail -> Player",
+            "Use Case Title: Return key policy scenarios",
+            "Path 1: Home -> Return -> Exit confirmation popup",
+            "Path 2: Exit popup open -> Return -> Popup closes and Home remains active",
+            "Path 3: Discover / Detail / Player -> Return -> Previous page",
             "",
             "Supporting notes:",
-            "- The review flow can start from either Home or Discover.",
-            "- Playback starts after the user selects an episode.",
-            "- The screenshots in this document follow the same path.",
+            "- The app follows Samsung TV Return key policy in the current release.",
+            "- The Home page does not exit immediately on Return.",
+            "- The dedicated EXIT key is left to the Samsung TV platform default behavior.",
             "",
             "No account login is required.",
             "No in-app purchase is required.",
@@ -288,7 +305,7 @@ def main() -> None:
     usage_picture = usage_sample.shapes[2]
     left, top, width, height = usage_picture.left, usage_picture.top, usage_picture.width, usage_picture.height
     remove_shape(usage_picture)
-    usage_sample.shapes.add_picture(str(usage_collage), left, top, width=width, height=height)
+    usage_sample.shapes.add_picture(str(return_collage), left, top, width=width, height=height)
 
     menu_slide = prs.slides[8]
     menu_slide.shapes[0].text = "Menu & Function Description"
@@ -316,8 +333,11 @@ def main() -> None:
     clear_and_set_text(
         key_slide.shapes[1],
         [
-            "No custom remote-control key remapping is implemented in the current release.",
-            "Standard Samsung TV navigation behavior is used.",
+            "The current release follows Samsung TV Return key policy.",
+            "Home page: Return opens the exit confirmation popup.",
+            "Exit popup open: Return closes the popup first.",
+            "Discover / Detail / Player pages: Return navigates to the previous page.",
+            "The dedicated EXIT key uses the Samsung TV platform default behavior.",
         ],
         font_size=18,
     )
@@ -327,12 +347,12 @@ def main() -> None:
         ("ENTER", "Select the focused card, button, or episode", "Standard selection behavior"),
         ("UP / DOWN", "Move focus vertically", "Standard directional navigation"),
         ("LEFT / RIGHT", "Move focus horizontally", "Standard directional navigation"),
-        ("BACK / RETURN", "Go to the previous screen", "Standard Samsung TV behavior"),
-        ("EXIT", "Close the application", "Standard Samsung TV behavior"),
-        ("PLAY / PAUSE", "Platform default behavior only", "No custom key mapping"),
-        ("FAST FORWARD / REWIND", "N/R", "No custom key mapping in current release"),
-        ("COLOR KEYS", "N/R", "No custom key mapping in current release"),
-        ("CHANNEL / NUMBER KEYS", "N/R", "No custom key mapping in current release"),
+        ("RETURN on Home", "Open the exit confirmation popup", "Required by Samsung TV Return key policy"),
+        ("RETURN on popup", "Close the exit confirmation popup", "The app stays on the Home page"),
+        ("RETURN on Discover / Detail / Player", "Go to the previous screen", "Navigates back within the app flow"),
+        ("EXIT", "Close the application", "Platform default Samsung TV behavior"),
+        ("PLAY / PAUSE / FF / RW", "N/R", "No custom key mapping in current release"),
+        ("COLOR / CHANNEL / NUMBER KEYS", "N/R", "No custom key mapping in current release"),
     ]
     for r_idx, row in enumerate(rows):
         for c_idx, value in enumerate(row):

@@ -1,10 +1,8 @@
 /**
- * 遥控器交互模块 - Remote Control Module
- * 处理Samsung TV遥控器按键事件
+ * Remote control integration for Samsung TV.
  */
 
 const Remote = {
-    // 遥控器按键码
     KEYS: {
         ENTER: 13,
         LEFT: 37,
@@ -13,10 +11,10 @@ const Remote = {
         DOWN: 40,
         BACK: 10009,
         EXIT: 10182,
-        COLOR_F0: 403,  // 红色
-        COLOR_F1: 404,  // 绿色
-        COLOR_F2: 405,  // 黄色
-        COLOR_F3: 406,  // 蓝色
+        COLOR_F0: 403,
+        COLOR_F1: 404,
+        COLOR_F2: 405,
+        COLOR_F3: 406,
         VOLUME_UP: 447,
         VOLUME_DOWN: 448,
         MUTE: 449,
@@ -29,38 +27,56 @@ const Remote = {
         CHANNEL_DOWN: 428
     },
 
-    // 当前焦点元素
     currentFocus: null,
     focusableElements: [],
     focusHistory: [],
 
-    // 初始化
     init() {
         this.scanFocusableElements();
         this.bindEvents();
         console.log('Remote controller initialized');
     },
 
-    // 扫描可聚焦元素
-    scanFocusableElements() {
-        this.focusableElements = Array.from(document.querySelectorAll('[data-focusable="true"]'));
+    getFocusContext() {
+        const exitDialog = document.getElementById('exit-confirm-dialog');
+
+        if (exitDialog && !exitDialog.hidden) {
+            return exitDialog;
+        }
+
+        return document;
     },
 
-    // 绑定事件
+    scanFocusableElements() {
+        const focusContext = this.getFocusContext();
+        this.focusableElements = Array.from(focusContext.querySelectorAll('[data-focusable="true"]')).filter((element) => {
+            return !element.disabled && !element.hidden && !element.closest('[hidden]');
+        });
+
+        if (this.currentFocus && !this.focusableElements.includes(this.currentFocus)) {
+            this.currentFocus.classList.remove('focused');
+            this.currentFocus = null;
+        }
+    },
+
     bindEvents() {
-        document.addEventListener('keydown', (e) => this.handleKeyDown(e));
-        // 监听DOM变化重新扫描
+        document.addEventListener('keydown', (event) => this.handleKeyDown(event));
+
         const observer = new MutationObserver(() => {
             this.scanFocusableElements();
         });
+
         observer.observe(document.body, { childList: true, subtree: true });
     },
 
-    // 处理按键事件
     handleKeyDown(event) {
         const keyCode = event.keyCode || event.which;
 
-        // 阻止默认行为（除了普通文本输入）
+        // Leave the dedicated EXIT key to the TV platform.
+        if (keyCode === this.KEYS.EXIT) {
+            return;
+        }
+
         if (!this.isInputFocused()) {
             event.preventDefault();
         }
@@ -84,9 +100,6 @@ const Remote = {
             case this.KEYS.BACK:
                 this.goBack();
                 break;
-            case this.KEYS.EXIT:
-                this.exitApp();
-                break;
             case this.KEYS.PLAY:
             case this.KEYS.PAUSE:
                 this.togglePlayPause();
@@ -101,27 +114,24 @@ const Remote = {
                 break;
         }
 
-        // 触发自定义事件
         document.dispatchEvent(new CustomEvent('remote-key', {
             detail: { keyCode, remote: this }
         }));
     },
 
-    // 检查是否在输入框中
     isInputFocused() {
         const tag = document.activeElement?.tagName?.toLowerCase();
         return tag === 'input' || tag === 'textarea';
     },
 
-    // 获取当前焦点索引
     getCurrentIndex() {
         if (!this.currentFocus) {
             return -1;
         }
+
         return this.focusableElements.indexOf(this.currentFocus);
     },
 
-    // 向上导航
     navigateUp() {
         const currentIndex = this.getCurrentIndex();
         if (currentIndex === -1) {
@@ -129,16 +139,14 @@ const Remote = {
             return;
         }
 
-        // 计算网格列数
         const columns = this.calculateColumns();
-        let newIndex = currentIndex - columns;
+        const newIndex = currentIndex - columns;
 
         if (newIndex >= 0) {
             this.setFocus(newIndex);
         }
     },
 
-    // 向下导航
     navigateDown() {
         const currentIndex = this.getCurrentIndex();
         if (currentIndex === -1) {
@@ -147,14 +155,13 @@ const Remote = {
         }
 
         const columns = this.calculateColumns();
-        let newIndex = currentIndex + columns;
+        const newIndex = currentIndex + columns;
 
         if (newIndex < this.focusableElements.length) {
             this.setFocus(newIndex);
         }
     },
 
-    // 向左导航
     navigateLeft() {
         const currentIndex = this.getCurrentIndex();
         if (currentIndex === -1) {
@@ -162,13 +169,12 @@ const Remote = {
             return;
         }
 
-        let newIndex = currentIndex - 1;
+        const newIndex = currentIndex - 1;
         if (newIndex >= 0) {
             this.setFocus(newIndex);
         }
     },
 
-    // 向右导航
     navigateRight() {
         const currentIndex = this.getCurrentIndex();
         if (currentIndex === -1) {
@@ -176,24 +182,24 @@ const Remote = {
             return;
         }
 
-        let newIndex = currentIndex + 1;
+        const newIndex = currentIndex + 1;
         if (newIndex < this.focusableElements.length) {
             this.setFocus(newIndex);
         }
     },
 
-    // 计算网格列数（基于CSS grid）
     calculateColumns() {
-        const container = this.currentFocus?.closest('.drama-grid, .categories-grid, .episodes-grid, .nav-menu');
-        if (!container) return 1;
+        const container = this.currentFocus?.closest('.drama-grid, .categories-grid, .episodes-grid, .nav-menu, .exit-confirm-actions');
+        if (!container) {
+            return 1;
+        }
 
         const style = window.getComputedStyle(container);
         const gridTemplate = style.getPropertyValue('grid-template-columns');
         if (gridTemplate && gridTemplate !== 'none') {
-            return 1; // 单列
+            return 1;
         }
 
-        // 尝试获取flex布局的列数
         const flexWrap = style.getPropertyValue('flex-wrap');
         if (flexWrap === 'wrap') {
             const containerWidth = container.offsetWidth;
@@ -204,58 +210,47 @@ const Remote = {
         return 1;
     },
 
-    // 确认选择
     confirm() {
-        if (this.currentFocus) {
-            // 触发点击事件
-            this.currentFocus.click();
-
-            // 触发自定义确认事件
-            this.currentFocus.dispatchEvent(new CustomEvent('remote-confirm', {
-                bubbles: true,
-                detail: { element: this.currentFocus }
-            }));
+        if (!this.currentFocus) {
+            return;
         }
+
+        this.currentFocus.click();
+        this.currentFocus.dispatchEvent(new CustomEvent('remote-confirm', {
+            bubbles: true,
+            detail: { element: this.currentFocus }
+        }));
     },
 
-    // 返回
     goBack() {
-        // 触发自定义返回事件
         document.dispatchEvent(new CustomEvent('remote-back', {
             detail: { remote: this }
         }));
-
-        // 如果有历史记录则返回
-        if (this.focusHistory.length > 0) {
-            const lastFocus = this.focusHistory.pop();
-            if (document.contains(lastFocus)) {
-                this.setFocus(lastFocus);
-            }
-        }
     },
 
-    // 退出应用
     exitApp() {
-        if (typeof tizen !== 'undefined') {
+        if (typeof tizen !== 'undefined' && tizen.application) {
             tizen.application.getCurrentApplication().exit();
-        } else {
-            console.log('Exit app (simulated in web)');
+            return;
         }
+
+        console.log('Exit app (simulated in web)');
     },
 
-    // 播放/暂停
     togglePlayPause() {
         const video = document.getElementById('video-player');
-        if (video) {
-            if (video.paused) {
-                video.play();
-            } else {
-                video.pause();
-            }
+        if (!video) {
+            return;
         }
+
+        if (video.paused) {
+            video.play();
+            return;
+        }
+
+        video.pause();
     },
 
-    // 快进
     fastForward() {
         const video = document.getElementById('video-player');
         if (video) {
@@ -263,7 +258,6 @@ const Remote = {
         }
     },
 
-    // 快退
     rewind() {
         const video = document.getElementById('video-player');
         if (video) {
@@ -271,9 +265,16 @@ const Remote = {
         }
     },
 
-    // 设置焦点
     setFocus(elementOrIndex) {
-        // 移除当前焦点
+        let nextFocus = elementOrIndex;
+        if (typeof elementOrIndex === 'number') {
+            nextFocus = this.focusableElements[elementOrIndex] || null;
+        }
+
+        if (this.currentFocus === nextFocus) {
+            return;
+        }
+
         if (this.currentFocus) {
             this.currentFocus.classList.remove('focused');
             this.focusHistory.push(this.currentFocus);
@@ -282,12 +283,7 @@ const Remote = {
             }
         }
 
-        // 设置新焦点
-        if (typeof elementOrIndex === 'number') {
-            this.currentFocus = this.focusableElements[elementOrIndex];
-        } else {
-            this.currentFocus = elementOrIndex;
-        }
+        this.currentFocus = nextFocus;
 
         if (this.currentFocus) {
             this.currentFocus.classList.add('focused');
@@ -299,7 +295,6 @@ const Remote = {
         }
     },
 
-    // 清除焦点
     clearFocus() {
         if (this.currentFocus) {
             this.currentFocus.classList.remove('focused');
@@ -307,15 +302,13 @@ const Remote = {
         }
     },
 
-    // 导航到指定页面时重置焦点
     resetForPage(pageId) {
         this.focusHistory = [];
         this.scanFocusableElements();
 
-        // 默认聚焦第一个元素
-        const firstElement = this.focusableElements.find(el =>
-            el.closest(`#${pageId}-page`) || el.closest('#main-nav')
-        );
+        const firstElement = this.focusableElements.find((element) => {
+            return element.closest(`#${pageId}-page`) || element.closest('#main-nav');
+        });
 
         if (firstElement) {
             this.setFocus(firstElement);
@@ -323,5 +316,4 @@ const Remote = {
     }
 };
 
-// 导出模块
 window.Remote = Remote;
