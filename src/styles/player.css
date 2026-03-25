@@ -1,0 +1,232 @@
+/* Player Page Styles */
+#player-page {
+    min-height: 100vh;
+    background: var(--bg-primary, #0a0a0a);
+    color: var(--text-primary, #ffffff);
+}
+
+.player-container {
+    display: flex;
+    height: 100vh;
+    gap: 20px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.video-player {
+    flex: 1;
+    position: relative;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-video {
+    width: 100%;
+    height: calc(100% - 80px);
+    object-fit: contain;
+    background: #000;
+}
+
+.player-controls {
+    height: 80px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    gap: 24px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+}
+
+.back-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
+}
+
+.back-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+}
+
+.episode-info {
+    flex: 1;
+    color: white;
+}
+
+.drama-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 4px 0;
+    color: white;
+}
+
+.episode-title {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+}
+
+.player-sidebar {
+    width: 320px;
+    background: var(--bg-secondary, #1a1a1a);
+    border-radius: 12px;
+    padding: 24px;
+    overflow-y: auto;
+    height: calc(100vh - 40px);
+}
+
+.episode-list h4 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 20px 0;
+    color: var(--text-primary, #ffffff);
+}
+
+.episode-item {
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 8px;
+    background: var(--bg-card, #252525);
+    border: 1px solid transparent;
+}
+
+.episode-item:hover {
+    background: var(--bg-card-hover, #333333);
+    transform: translateX(4px);
+}
+
+.episode-item.active {
+    background: var(--accent-color, #ff6b35);
+    border-color: var(--accent-color-light, #ff8c5a);
+    color: white;
+}
+
+.episode-item img {
+    width: 80px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.episode-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.episode-number {
+    font-size: 12px;
+    font-weight: 600;
+    color: inherit;
+    opacity: 0.8;
+    margin-bottom: 2px;
+}
+
+.episode-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: inherit;
+    margin-bottom: 2px;
+}
+
+.episode-duration {
+    font-size: 12px;
+    color: inherit;
+    opacity: 0.7;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .player-container {
+        flex-direction: column;
+        padding: 16px;
+    }
+
+    .player-sidebar {
+        width: 100%;
+        height: 300px;
+        padding: 16px;
+    }
+
+    .main-video {
+        height: calc(100vh - 120px);
+    }
+
+    .player-controls {
+        padding: 0 16px;
+        height: 70px;
+    }
+}
+
+@media (max-width: 768px) {
+    .player-container {
+        padding: 12px;
+        gap: 12px;
+    }
+
+    .player-sidebar {
+        height: 250px;
+        padding: 12px;
+    }
+
+    .episode-item {
+        padding: 8px;
+        gap: 8px;
+    }
+
+    .episode-item img {
+        width: 60px;
+        height: 34px;
+    }
+
+    .drama-title {
+        font-size: 16px;
+    }
+
+    .episode-title {
+        font-size: 12px;
+    }
+
+    .back-button {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+}
+
+/* Dark theme variables */
+:root {
+    --bg-primary: #0a0a0a;
+    --bg-secondary: #1a1a1a;
+    --bg-card: #252525;
+    --bg-card-hover: #333333;
+    --text-primary: #ffffff;
+    --text-secondary: #b3b3b3;
+    --accent-color: #ff6b35;
+    --accent-color-light: #ff8c5a;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --border-radius: 8px;
+    --border-radius-lg: 12px;
+}
