@@ -34,10 +34,10 @@ const PlayerPage = {
         container.innerHTML = `
             <div class="player-container">
                 <div class="video-player">
-                    <video 
-                        id="main-video" 
-                        class="main-video" 
-                        src="${episode.videoUrl}" 
+                    <video
+                        id="video-player"
+                        class="main-video"
+                        src="${episode.videoUrl}"
                         poster="${episode.thumbnail}"
                         controls
                         autoplay
@@ -93,7 +93,7 @@ const PlayerPage = {
         });
 
         // Video ended event - auto play next episode
-        const video = document.getElementById('main-video');
+        const video = document.getElementById('video-player');
         if (video) {
             video.addEventListener('ended', () => {
                 const currentIndex = drama.episodeList.findIndex(ep => ep.id == currentEpisode.id);
@@ -112,7 +112,7 @@ const PlayerPage = {
         const container = document.getElementById('player-page');
         if (container) {
             // Stop any playing video
-            const video = container.querySelector('#main-video');
+            const video = container.querySelector('#video-player');
             if (video) {
                 video.pause();
                 video.removeAttribute('src'); // remove src to stop buffering
