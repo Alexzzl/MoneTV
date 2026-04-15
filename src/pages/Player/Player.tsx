@@ -47,6 +47,17 @@ export default function Player() {
     }
   }, [drama, episode, navigate])
 
+  // Auto-focus video area when entering player page
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const videoArea = document.getElementById('video-player-area')
+      if (videoArea) {
+        Remote.setFocus(videoArea)
+      }
+    }, 100)
+    return () => clearTimeout(timer)
+  }, [episodeId])
+
   useEffect(() => {
     const video = videoRef.current
     if (!video || !episode) return
@@ -60,8 +71,27 @@ export default function Player() {
       }
     }
 
+    // Handle focus-based click on video area
+    const handleVideoAreaClick = () => {
+      if (video.paused) {
+        video.play()
+      } else {
+        video.pause()
+      }
+    }
+
+    const videoArea = document.getElementById('video-player-area')
+    if (videoArea) {
+      videoArea.addEventListener('click', handleVideoAreaClick)
+    }
+
     video.addEventListener('ended', handleEnded)
-    return () => video.removeEventListener('ended', handleEnded)
+    return () => {
+      video.removeEventListener('ended', handleEnded)
+      if (videoArea) {
+        videoArea.removeEventListener('click', handleVideoAreaClick)
+      }
+    }
   }, [drama, episode, navigate])
 
   useEffect(() => {
@@ -80,15 +110,15 @@ export default function Player() {
   return (
     <div id="player-page" className="page active">
       <div className="player-container">
-        <div className="video-player">
+        <div id="video-player-area" className="video-player" data-focusable="true" tabIndex={0}>
           <video
             ref={videoRef}
-            id="main-video"
+            id="video-player"
             className="main-video"
             src={episode.videoUrl}
             poster={episode.thumbnail}
-            controls
             autoPlay
+            playsInline
           />
           <div className="player-controls">
             <div className="episode-info">

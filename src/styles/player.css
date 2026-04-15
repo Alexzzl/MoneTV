@@ -21,6 +21,13 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Focus indicator for video player area (Samsung TV remote focus) */
+.video-player.focused {
+    box-shadow: 0 0 0 3px var(--accent-color, #ff6b35);
 }
 
 .main-video {

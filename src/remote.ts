@@ -166,7 +166,14 @@ const Remote = {
 
     const style = window.getComputedStyle(container)
     const gridTemplate = style.getPropertyValue('grid-template-columns')
-    if (gridTemplate && gridTemplate !== 'none') return 1
+    if (gridTemplate && gridTemplate !== 'none') {
+      // Count the number of column definitions (e.g. "repeat(4, 1fr)" or "200px 200px 200px")
+      const repeatMatch = gridTemplate.match(/repeat\((\d+)/)
+      if (repeatMatch) return parseInt(repeatMatch[1], 10)
+      // Count space-separated track definitions
+      const tracks = gridTemplate.split(' ').filter(t => t.trim() && !t.startsWith('minmax') && !t.startsWith('('))
+      return tracks.length > 0 ? tracks.length : 1
+    }
 
     const flexWrap = style.getPropertyValue('flex-wrap')
     if (flexWrap === 'wrap') {
